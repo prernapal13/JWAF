@@ -9,6 +9,7 @@ import auto.utility.Services;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.Select;
 
 import static org.testng.Assert.assertEquals;
 
@@ -32,9 +33,29 @@ public class DropdownPage extends Services {
     }
 
     public void selectDropDown(int index) {
-        // waitForElement(xpathDropdown);
+        waitForElement(xpathDropdown);
+        WebElement ele = driver.findElement(By.xpath(xpathDropdown));
+        Select select = new Select(ele);
+        select.selectByIndex(index);
+    }
+
+    public void selectDropDown(String text) {
+        waitForElement(xpathDropdown);
         WebElement ele = driver.findElement(By.xpath(xpathDropdown));
 
+        Select select = new Select(ele);
+        select.selectByVisibleText(text);
+        String actual = select.getFirstSelectedOption().getText();
+
+        assertEquals(actual, text, "Actual " + actual + " should be same as expected " + text);
+    }
+
+    public void selectDropDownByValue(String text) {
+        waitForElement(xpathDropdown);
+        WebElement ele = driver.findElement(By.xpath(xpathDropdown));
+
+        Select select = new Select(ele);
+        select.selectByValue(text);
     }
 
 }
